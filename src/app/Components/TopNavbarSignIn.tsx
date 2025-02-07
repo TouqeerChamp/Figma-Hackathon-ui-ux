@@ -1,5 +1,5 @@
-import Link from 'next/link'
-import React from 'react'
+import Link from "next/link";
+import React from "react";
 
 const TopNavbarSignIn = () => {
   return (
@@ -10,35 +10,46 @@ const TopNavbarSignIn = () => {
           <div className="mb-2 sm:mb-0">
             <Link href="/snkrs">
               <img
-                src="/toplogo.png"
+                src="/toplogo.png "
                 alt="Jordan Logo"
-                className="h-6 sm:h-8"
+                className="h-6 sm:h-8 hvr-grow"
               />
             </Link>
           </div>
 
           {/* Links Section */}
-          <div className="flex flex-wrap sm:flex-nowrap items-center justify-center space-x-0 sm:space-x-4 text-sm text-gray-700">
+          <div
+            data-aos="fade-down"
+            className="flex flex-wrap sm:flex-nowrap items-center justify-center space-x-0 sm:space-x-4 text-sm text-gray-700"
+          >
             <Link href="/product">
-              <li className="hover:text-gray-400 list-none mx-2 sm:mx-0">Find a Store</li>
+              <li className="hover:text-gray-400 list-none mx-2 sm:mx-0">
+                Find a Store
+              </li>
             </Link>
             <span className="hidden sm:inline">|</span>
             <Link href="contactus">
-              <li className="hover:text-gray-400 list-none mx-2 sm:mx-0">Help</li>
+              <li className="hover:text-gray-400 list-none mx-2 sm:mx-0">
+                Help
+              </li>
             </Link>
             <span className="hidden sm:inline">|</span>
             <Link href="join-us">
-              <li className="hover:text-gray-400 list-none mx-2 sm:mx-0">Join Us</li>
+              <li className="hover:text-gray-400 list-none mx-2 sm:mx-0">
+                Join Us
+              </li>
             </Link>
             <span className="hidden sm:inline">|</span>
             <Link href="/login">
-              <li className="hover:text-gray-400 list-none mx-2 sm:mx-0">Sign In</li>
+              <li className="hover:text-gray-400 list-none mx-2 sm:mx-0">
+                Sign In
+              </li>
             </Link>
           </div>
         </div>
       </nav>
     </div>
-  )
-}
+  );
+};
 
-export default TopNavbarSignIn
+export default TopNavbarSignIn;

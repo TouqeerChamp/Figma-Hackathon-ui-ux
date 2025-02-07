@@ -1,9 +1,10 @@
 "use client";
-
+import AOS from "aos";
+import "aos/dist/aos.css";
 import Link from "next/link";
 import { FaRegHeart } from "react-icons/fa";
-import { IoBagOutline } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { TiShoppingCart } from "react-icons/ti";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,45 +14,70 @@ export default function Navbar() {
     setIsOpen(!isOpen);
   };
 
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: false,
+    });
+  }, []);
+
   return (
     <div>
       <nav className="bg-white">
         <div className="container mx-auto px-6 py-2 flex justify-between items-center">
           {/* Logo Section */}
-          <div className="flex-shrink-0">
-            <img src="/logo.png" alt="Nike Logo" className="h-8 w-auto hover:bg-gray-100 rounded cursor-pointer" />
-          </div>
+          <Link href="/">
+            <div className="flex-shrink-0">
+              <img
+                src="/logo.png"
+                alt="Nike Logo"
+                className="h-16 w-auto hvr-grow hover:bg-gray-100 rounded cursor-pointer"
+              />
+            </div>
+          </Link>
 
           {/* Navbar Links for large screens */}
-          <ul className="hidden sm:flex space-x-8 ml-48">
+          <ul className="hidden sm:flex space-x-8 ml-48" data-aos="fade-down">
             <li>
               <Link href="/product">
-                <li className="text-gray-700 hover:text-gray-400">New & Featured</li>
+                <li className="text-gray-900 hover:text-gray-300 hvr-grow">
+                  New & Featured
+                </li>
               </Link>
             </li>
             <li>
               <Link href="/">
-                <li className="text-gray-700 hover:text-gray-400">Men</li>
+                <li className="text-gray-900 hover:text-gray-300 hvr-grow">
+                  Men
+                </li>
               </Link>
             </li>
             <li>
               <Link href="/mensummary">
-                <li className="text-gray-700 hover:text-gray-400">Women</li>
+                <li className="text-gray-900 hover:text-gray-300 hvr-grow">
+                  Women
+                </li>
               </Link>
             </li>
             <li>
               <Link href="/kids">
-                <li className="text-gray-700 hover:text-gray-400">Kids</li>
+                <li className="text-gray-900 hover:text-gray-300 hvr-grow">
+                  Kids
+                </li>
               </Link>
             </li>
             <li>
               <Link href="/menshoes">
-                <li className="text-gray-700 hover:text-gray-400">Sale</li>
+                <li className="text-gray-900 hover:text-gray-300 hvr-grow">
+                  Sale
+                </li>
               </Link>
             </li>
             <li>
               <Link href="/snkrs">
-                <li className="text-gray-700 hover:text-gray-400">SNKRS</li>
+                <li className="text-gray-900 hover:text-gray-300 hvr-grow">
+                  SNKRS
+                </li>
               </Link>
             </li>
           </ul>
@@ -103,8 +129,10 @@ export default function Navbar() {
 
             {/* Icons */}
             <div className="flex items-center space-x-4">
-              <FaRegHeart className="hover:text-gray-400 cursor-pointer"/>
-              <Link href="/cart"><IoBagOutline className="hover:text-gray-400 cursor-pointer"/></Link>
+              <FaRegHeart className="hover:text-pink-400  cursor-pointer size-6 " />
+              <Link href="/carts">
+                <TiShoppingCart className="hover:text-pink-400  cursor-pointer size-7 " />
+              </Link>
             </div>
           </div>
         </div>

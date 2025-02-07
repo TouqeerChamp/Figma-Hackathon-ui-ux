@@ -1,133 +1,193 @@
-import React from 'react'
-import TopNavbarSignIn from '../Components/TopNavbarSignIn'
-import Navbar from '../Components/Header'
+import React from "react";
+import TopNavbarSignIn from "../Components/TopNavbarSignIn";
+import Navbar from "../Components/Header";
 import { IoSearchOutline } from "react-icons/io5";
-import { IoIosThumbsUp } from "react-icons/io";
-import { IoIosThumbsDown } from "react-icons/io";
-
-
-
+import { IoIosThumbsUp, IoIosThumbsDown } from "react-icons/io";
+import Image from "next/image";
+import Link from "next/link";
 
 const ContactUs = () => {
   return (
-    <div>
-        <TopNavbarSignIn />
-        <Navbar />
-        <div className="container mx-auto text-center mt-8">
-            <h1 className='text-[20px] font-semibold'>GET HELP</h1>
-            </div>
-            <div className="container mx-auto text-center pt-3 grid grid-cols-1 items-end w-[420px]">
-                <input type="text" placeholder='What can we help you with?' className='px-24 py-3 text-[12px] border rounded-lg relative'/>
-                <IoSearchOutline className='absolute ml-[380px] mb-3'/>
+    <div className="bg-gray-100 min-h-screen">
+      <TopNavbarSignIn />
+      <Navbar />
+
+      <div className="container mx-auto text-center mt-8">
+        <h1 className="text-2xl font-bold text-gray-800">GET HELP</h1>
+      </div>
+
+      <div className="container mx-auto flex justify-center pt-3">
+        <div className="relative w-[420px]">
+          <input
+            type="text"
+            placeholder="What can we help you with?"
+            className="w-full px-5 py-3 text-sm border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <IoSearchOutline className="absolute right-4 top-3 text-gray-500 text-lg" />
         </div>
+      </div>
 
-
+      <div className="container mx-auto flex flex-col lg:flex-row gap-8 p-6">
         {/* Left Section */}
-        <div className="container mx-auto w-full p-4 pt-5 flex">
-          <div className="container w-[900px] p-4 space-y-5 text-[12px] border-r ">
-            <p className='font-semibold text-[20px]'>WHAT PAYMENT OPTIONS CAN I USE ON NIKE ORDERS?</p>
-            <p>We want to make buying your favourite Nike shoes and gear online fast and easy, and we accept the following payment options:</p>
-            <p className='pl-5'>Visa, Mastercard, Diners Club, Discover, American Express, Visa Electron, Maestro</p>
-            <p className='pl-5'>If you enter your PAN information at checkout, youll be able to pay for your order with PayTM or a local credit or debit card.</p>
-            <p className='pl-5'>Apple Pay</p>
-            <p><u><b>Nike Members</b></u> can store multiple debit or credit cards in their profile for faster checkout. If youre not already a Member, <u><b>join us</b></u> <br /> today.</p>
-        
-        <div className="flex gap-4 pt-2">
-            <button className='bg-black text-white border rounded-2xl px-4 py-1 text-[12px] cursor-pointer hover:bg-gray-400'>JOIN US</button>
-            <button className='bg-black text-white border rounded-2xl px-4 py-1 text-[12px] cursor-pointer hover:bg-gray-400'>SHOP NIKE</button>
+        <div className="bg-white shadow-md rounded-lg p-6 w-full lg:w-2/3">
+          <h2 className="text-xl font-semibold text-gray-800">
+            WHAT PAYMENT OPTIONS CAN I USE ON NIKE ORDERS?
+          </h2>
+          <p className="text-gray-600 mt-2">
+            We want to make buying your favorite Nike shoes and gear online fast
+            and easy. We accept the following payment options:
+          </p>
+
+          <ul className="list-disc pl-6 mt-2 text-gray-600">
+            <li>
+              Visa, Mastercard, Diners Club, Discover, American Express, Visa
+              Electron, Maestro
+            </li>
+            <li>Apple Pay</li>
+          </ul>
+
+          <p className="mt-2 text-gray-600">
+            Nike Members can store multiple debit or credit cards for faster
+            checkout.{" "}
+            <Link
+              href="/join-us"
+              className="mt-4 font-semibold py-1 px-1 shadow-md hover:shadow-xl rounded-lg hover:text-red-700"
+            >
+              Join us today.
+            </Link>
+          </p>
+
+          <div className="flex gap-4 mt-4">
+            <button className="mt-4 bg-gradient-to-r from-pink-500 to-red-500 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out hover:text-red-950">
+              <Link href="/join-us">JOIN US</Link>
+            </button>
+
+            <button className="mt-4 bg-gradient-to-r from-pink-500 to-red-500 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out hover:text-red-950">
+              <Link href="/snkrs">SHOP NIKE</Link>
+            </button>
+          </div>
+
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold text-gray-800">FAQs</h3>
+            <div className="mt-2 space-y-4 text-gray-600">
+              <p>
+                <strong>
+                  Does my card need international purchases enabled?
+                </strong>{" "}
+                Yes, we recommend asking your bank to enable international
+                purchases.
+              </p>
+              <p>
+                <strong>Can I pay for my order with multiple methods?</strong>{" "}
+                No, payment for Nike orders can’t be split between multiple
+                payment methods.
+              </p>
+              <p>
+                <strong>Why don’t I see Apple Pay as an option?</strong> You
+                need to use a compatible Apple device and the Safari browser.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 text-sm text-gray-500">
+            <p>Was this answer helpful?</p>
+            <div className="flex items-center gap-2 text-lg mt-1">
+              <IoIosThumbsUp className="cursor-pointer hover:text-green-500" />
+              <IoIosThumbsDown className="cursor-pointer hover:text-red-500" />
+            </div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold text-gray-800">Contact Us</h3>
+            <form className="mt-4 space-y-4">
+              <input
+                type="text"
+                placeholder="Your Name"
+                className="w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="email"
+                placeholder="Your Email"
+                className="w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
+              />
+              <textarea
+                placeholder="Your Message"
+                className="w-full p-3 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 h-24"
+              ></textarea>
+              <button
+                type="submit"
+                className="w-full mt-4 bg-gradient-to-r from-pink-500 to-red-500 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out hover:text-red-950"
+              >
+                Send Message
+              </button>
+            </form>
+          </div>
         </div>
 
-        <div className="">
-            <p className='font-semibold text-[16px]'>FAQs</p>
+        {/* Right Section */}
+        <div className="bg-white shadow-md rounded-lg p-6 w-full lg:w-1/3 text-center">
+          <h2 className="text-xl font-semibold text-gray-800">CONTACT US</h2>
+          <div className="mt-6 space-y-10">
+            <div>
+              <Image
+                src="/contactusimg.png"
+                alt="call"
+                width={80}
+                height={80}
+                className="mx-auto"
+              />
+              <p className="text-gray-600 mt-2 font-semibold">
+                000 800 919 0566
+              </p>
+              <p className="text-gray-600 text-sm">
+                Products & Orders: 24/7 <br /> Company Info & Enquiries: Mon-Fri
+              </p>
             </div>
             <div>
-                <p className='font-semibold pb-2'>Does my card need international purchases enabled?</p>
-                <p className=''>Yes, we recommend asking your bank to enable international purchases on your card. You will be notified at checkout <br /> if international purchases need to be enabled.</p>
+              <Image
+                src="/contacttextimg.png"
+                alt="text"
+                width={80}
+                height={80}
+                className="mx-auto"
+              />
+              <p className="text-gray-600 text-sm mt-2">
+                24 hours a day, 7 days a week
+              </p>
             </div>
-
-            <p>Please note, some banks may charge a small transaction fee for international orders.</p>
-            
-          <div>
-            <p className='font-semibold pb-2'>Can I pay for my order with multiple methods?</p>
-                <p className=''>No, payment for Nike orders cant be split between multiple payment methods.</p>
-            </div>
-
             <div>
-            <p className='font-semibold pb-2'>What payment method is accepted for SNKRS orders?</p>
-                <p className=''>You can use any accepted credit card to pay for your SNKRS order.</p>
+              <Image
+                src="/contactmsgimg.png"
+                alt="message"
+                width={80}
+                height={80}
+                className="mx-auto"
+              />
+              <p className="text-gray-600 text-sm mt-2">
+                We will reply within five business days
+              </p>
             </div>
-
             <div>
-            <p className='font-semibold pb-2'>Why dont I see Apple Pay as an option?</p>
-                <p className=''>To see Apple Pay as an option in the Nike App or on Nike.com, youll need to use a compatible Apple device running the latest <br /> OS, be signed in to your iCloud account and have a supported card in your Wallet. Additionally, youll need to use Safari to use <br /> Apple Pay on Nike.com.</p>
+              <Image
+                src="/contactstoreimg.png"
+                alt="store"
+                width={80}
+                height={80}
+                className="mx-auto"
+              />
+              <p className="text-gray-600 text-sm mt-2 font-semibold">
+                STORE LOCATOR
+              </p>
+              <p className="text-gray-600 text-sm">
+                Find Nike retail stores near you
+              </p>
             </div>
-
-            <div className="text-[11px]">
-                <p>Was this answer helpful?</p>
-                <div className="flex items-center gap-2 text-[16px] pt-1">
-                <IoIosThumbsUp />
-                <IoIosThumbsDown />                   
-                </div>
-                <p className='text-gray-500 pt-1'>RELATED</p>
-            </div>
-
-            <div className="underline font-semibold space-y-2 pl-5 cursor-pointer">
-                <p>WHAT ARE NIKES DELIVERY OPTIONS?</p>
-                <p>HOW DO I GET FREE DELIVERY ON NIKE ORDERS</p>
-            </div>
-      </div>
-
-
-
-      {/* Right Section */}
-      <div className="mx-auto text-center">
-        <p className='font-semibold text-[20px]'>CONTACT US</p>
-        <div className="w-[260px] h-[242px]">
-            <div className="ml-24 pt-5">
-                <img src="/contactusimg.png" alt="call" />
-                </div>
-                <p className='text-[12px] pt-5 font-semibold'>000 800 919 0566</p>
-                <p className='text-[12px] pt-1'>Products & Orders: 24 hours a day, <br /> 7 days a week <br />
-                Company Info & Enquiries: 07:30 <br /> - 16:30, Monday - Friday</p>
+          </div>
         </div>
-
-        <div className="w-[260px] h-[150px]">
-            <div className="ml-24 pt-6">
-                <img src="/contacttextimg.png" alt="text" />
-            </div>
-            <div className="pt-3">
-                <p className='text-[12px] font-semibold'>24 hours a day</p>
-                <p className='text-[12px]'>7 days a week</p>
-            </div>
-        </div>
-
-        <div className="w-[260px] h-[150px]">
-            <div className="ml-24 pt-6">
-                <img src="/contactmsgimg.png" alt="text" />
-            </div>
-            <div className="pt-3">
-                <p className='text-[12px] font-semibold'>Well reply within</p>
-                <p className='text-[12px]'>five business days</p>
-            </div>
-        </div>
-
-
-        <div className="w-[260px] h-[150px]">
-            <div className="ml-24 pt-6">
-                <img src="/contactstoreimg.png" alt="text" />
-            </div>
-            <div className="pt-3">
-                <p className='text-[12px] font-semibold'>STORE LOCATOR</p>
-                <p className='text-[12px]'>Find Nike retail stores near you</p>
-            </div>
-        </div>
-
-
-
       </div>
     </div>
-    </div>
-  )
-}
+  );
+};
 
-export default ContactUs
+export default ContactUs;

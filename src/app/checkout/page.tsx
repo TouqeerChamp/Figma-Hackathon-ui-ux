@@ -1,175 +1,209 @@
-import React from 'react'
-import { LuMessageSquareText } from "react-icons/lu";
-import { IoLockClosedOutline } from "react-icons/io5";
-import Link from 'next/link';
+"use client"
+import React, { useEffect, useState } from "react";
+import { CgChevronRight } from "react-icons/cg";
+import { Product } from "../../../types/products";
+import { urlFor } from "@/sanity/lib/image";
+import Image from "next/image";
+import TopNavbarLogin from "../Components/TopNavbarLogin";
+import Navbar from "../Components/Header";
+import Swal from "sweetalert2";
 
+const CheckoutPage = () => {
+  const [cartItems, setCartItems] = useState<Product[]>([]);
+  const [discount, setDiscount] = useState<number>(0);
+  const [formValues, setFormValues] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    address: "",
+    postalCode: "",
+    city: ""
+  });
 
-const CheckOut = () => {
+  const [formErrors, setFormErrors] = useState({
+    firstName: false,
+    lastName: false,
+    email: false,
+    phone: false,
+    address: false,
+    postalCode: false,
+    city: false
+  });
+
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+        setCartItems(JSON.parse(savedCart));
+    }
+
+    const appliedDiscount = localStorage.getItem("appliedDiscount");
+    if (appliedDiscount) {
+        setDiscount(Number(appliedDiscount));
+    }
+}, []);;
+
+  const subTotal = cartItems.reduce(
+    (total, item) => total + item.price * item.inventory,
+    0
+  );
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormValues({
+      ...formValues,
+      [id]: value
+    });
+    setFormErrors({
+      ...formErrors,
+      [id]: !value.trim()
+    });
+  };
+  
+
+  const validateForm = () => {
+    const errors = {
+      firstName: !formValues.firstName.trim(),
+      lastName: !formValues.lastName.trim(),
+      email: !formValues.email.trim(),
+      phone: !formValues.phone.trim(),
+      address: !formValues.address.trim(),
+      postalCode: !formValues.postalCode.trim(),
+      city: !formValues.city.trim()
+    };
+    setFormErrors(errors);
+    return !Object.values(errors).some((error) => error);
+  };
+
+  const handlePlaceOrder = () => {
+    if (!validateForm()) {
+      console.log("Form Errors:", formErrors);
+      Swal.fire(
+        "Error!",
+        "Please fill in all required fields before placing the order.",
+        "error"
+      );
+      return;
+    } 
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, place order!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          "Success!",
+          "Your order has been placed successfully.",
+          "success"
+        );
+        localStorage.removeItem("cart");
+        localStorage.removeItem("appliedDiscount");
+        setCartItems([]);
+        setFormValues({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          address: "",
+          postalCode: "",
+          city: "",
+        });
+      }
+    });
+  };
+  
+  
+  
+
   return (
     <div>
-
-<div className="w-full">
-  <div className="container mx-auto w-full h-[72.8px] flex justify-between items-center px-4 sm:px-6 lg:px-8">
-    <div>
-      <Link href="/product">
-        <img src="/logo.png" alt="logo" className="w-auto h-8 sm:h-10" />
-      </Link>
-    </div>
-    <div className="flex gap-4 sm:gap-8 items-center">
-      <p className="text-[10px] sm:text-[12px]">000 800 100 9538</p>
-      <div className="hover:text-gray-400 cursor-pointer">
-        <LuMessageSquareText className="text-sm sm:text-base" />
+      <TopNavbarLogin />
+      <Navbar />
+    <div className="min-h-screen bg-gray-50">
+      <div className="mt-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex items-center text-gray-700">Cart
+            <CgChevronRight className="h-4 w-4 text-gray-600" />
+            <span className="ml-2 font-semibold">Checkout</span>
+          </nav>
+        </div>
       </div>
-      <div className="hover:text-gray-400 cursor-pointer">
-        <IoLockClosedOutline className="text-sm sm:text-base" />
-      </div>
-    </div>
-  </div>
-</div>
 
-
-
-
-            
-
-<div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between">
-  {/* Left Section */}
-  <div className="w-full md:w-1/2">
-    <div className="pt-2 font-semibold text-lg">
-      <p>How would you like to get your order?</p>
-    </div>
-    <div className="pt-2 text-sm text-gray-400">
-      <p>
-        Customs regulation for India require a copy of the recipients KYC. The address on the KYC needs to match the shipping address. Our courier will contact you via SMS/email to obtain a copy of your KYC. The KYC will be stored securely and used solely for the purpose of clearing customs (including sharing it with customs officials) for all orders and returns. If your KYC does not match your shipping address, please click the link for more information. <u>Learn More</u>
-      </p>
-    </div>
-    <div className="w-full flex items-center gap-4 border-2 border-black rounded-xl p-4 mt-4">
-      <img src="/deliverit.png" alt="del" className="w-6 h-6" />
-      <p className="text-sm font-semibold">Deliver It</p>
-    </div>
-
-    <div className="font-semibold grid gap-4 pt-6">
-      <p>Enter your name and address:</p>
-      <input type="text" placeholder="First Name" className="border rounded-lg p-3 text-sm w-full" />
-      <input type="text" placeholder="Last Name" className="border rounded-lg p-3 text-sm w-full" />
-      <input type="text" placeholder="Address Line 1" className="border rounded-lg p-3 text-sm w-full" />
-    </div>
-    <p className="text-gray-400 text-xs mt-2">We do not ship to P.O. boxes</p>
-    <div className="grid gap-4 pt-4">
-      <input type="text" placeholder="Address Line 2" className="border rounded-lg p-3 text-sm w-full" />
-      <input type="text" placeholder="Address Line 3" className="border rounded-lg p-3 text-sm w-full" />
-    </div>
-    <div className="flex flex-col md:flex-row gap-4 pt-4">
-      <input type="text" placeholder="Postal Code" className="border rounded-lg p-3 text-sm w-full md:w-1/2" />
-      <input type="text" placeholder="Loyalty" className="border rounded-lg p-3 text-sm w-full md:w-1/2" />
-    </div>
-    <div className="flex flex-col md:flex-row gap-4 pt-4">
-      <div className="relative border rounded-lg p-3 text-sm w-full md:w-1/2">
-        <p className="text-gray-400">State/Territory</p>
-        <select className="absolute inset-0 opacity-0 w-full h-full"></select>
-      </div>
-      <input type="text" placeholder="India" className="border rounded-lg p-3 text-sm w-full md:w-1/2" />
-    </div>
-    <div className="flex items-center gap-2 pt-6 text-xs">
-      <input type="checkbox" />
-      <p>Save this address to my profile</p>
-    </div>
-    <div className="flex items-center gap-2 pt-4 text-xs">
-      <input type="checkbox" />
-      <p>Make this my preferred address</p>
-    </div>
-    <div className="grid gap-4 pt-8">
-      <p className="pb-2">Whats your contact information:</p>
-      <input type="email" placeholder="Email" className="border rounded-lg p-3 text-sm w-full" />
-      <p className="text-gray-400 text-xs">A confirmation email will be sent after checkout.</p>
-      <input type="tel" placeholder="Phone Number" className="border rounded-lg p-3 text-sm w-full" />
-      <p className="text-gray-400 text-xs">A carrier might contact you to confirm delivery.</p>
-    </div>
-    <div className="grid gap-4 pt-8">
-      <p>Whats your PAN?</p>
-      <input type="text" placeholder="PAN" className="border rounded-lg p-3 text-sm w-full" />
-      <p className="text-gray-400 text-xs">
-        Enter your PAN to enable payment with UPI, Net Banking or local card methods.
-      </p>
-    </div>
-    <div className="flex items-center gap-2 pt-2 text-xs text-gray-400">
-      <input type="checkbox" />
-      <p>Save PAN details to Nike profile</p>
-    </div>
-    <div className="flex items-center gap-2 pt-6 text-xs text-gray-400">
-      <input type="checkbox" />
-      <p>
-        I have read and consent to eShopWorld processing my information in accordance with the{" "}
-        <u>Privacy Statement</u> and <u>Cookie Policy</u>. eShopWorld is a trusted Nike partner.
-      </p>
-    </div>
-    <div className="mt-8 text-center">
-      <button className="text-sm text-gray-500 font-semibold w-full py-3 bg-gray-100 rounded-2xl">
-        Continue
-      </button>
-    </div>
-    <div className="pt-5">
-      <p className="border-t pt-2 font-semibold text-base">Delivery</p>
-    </div>
-    <div className="pt-5">
-      <p className="border-t pt-2 font-semibold text-base text-gray-400">Shipping</p>
-    </div>
-    <div className="pt-5">
-      <p className="border-t pt-2 font-semibold text-base text-gray-400">Billing</p>
-    </div>
-    <div className="pt-5">
-      <p className="border-t pt-2 font-semibold text-base text-gray-400">Payment</p>
-    </div>
-  </div>
-
-  {/* Right Section */}
-  <div className="w-full md:w-1/3 mt-8 md:mt-0">
-    <p className="font-semibold pb-5">Order Summary</p>
-    <div className="flex justify-between text-sm text-gray-400">
-      <p>Subtotal</p>
-      <p>$ 20 890.00</p>
-    </div>
-    <div className="flex justify-between text-sm text-gray-400 mt-1">
-      <p>Estimated Delivery & Handling</p>
-      <p>Free</p>
-    </div>
-    <div className="flex justify-between items-center border-t border-b py-3 mt-4 font-semibold text-sm">
-      <p>Total</p>
-      <p>$ 20 890.00</p>
-    </div>
-    <div className="text-xs text-gray-400 mt-2">
-      <p>(The total reflects the price of your order, including all duties and taxes)</p>
-    </div>
-    <div className="font-semibold text-base mt-5">
-      <p>Arrives Mon, 27 Mar-Wed, 12 Apr</p>
-    </div>
-    <div className="flex gap-4 mt-4">
-      <div className="w-1/2">
-        <img src="/summaryimg.png" alt="Product 1" className="w-full h-auto" />
-      </div>
-      <div className="w-1/2 text-sm">
-        <p>Nike Dri-FIT ADV TechKnit Ultra Mens Short-Sleeve Running Top</p>
-        <p className="text-gray-400">Qty: 1</p>
-        <p className="text-gray-400">Size: L</p>
-        <p className="text-gray-400">$ 3 895.00</p>
-      </div>
-    </div>
-    <div className="flex gap-4 mt-4">
-      <div className="w-1/2">
-        <img src="/summaryimg2.png" alt="Product 2" className="w-full h-auto" />
-      </div>
-      <div className="w-1/2 text-sm">
-        <p>Nike Air Max 97 SE Mens Shoes</p>
-        <p className="text-gray-400">Qty: 1</p>
-        <p className="text-gray-400">Size: UK 8</p>
-        <p className="text-gray-400">$ 16 995.00</p>
-      </div>
-    </div>
-  </div>
-</div>
-
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-white border rounded-lg p-6 shadow-md">
+          <h2 className="text-xl font-semibold mb-4 text-pink-700">Order Summary</h2>
+          {cartItems.length > 0 ? (
+            cartItems.map((item) => (
+              <div key={item._id} className="flex items-center gap-4 py-3 border-b">
+                <div className="w-16 h-16 rounded overflow-hidden">
+                  {item.image && (
+                    <Image
+                      src={urlFor(item.image).url()}
+                      alt={item.productName}
+                      width={100}
+                      height={100}
+                      className="w-full h-auto rounded-md object-cover"
+                    />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-sm font-medium text-gray-800">{item.productName}</h3>
+                  <p className="text-xs text-gray-500">Price: ${item.price * item.inventory}</p>
+                  <p className="text-xs text-gray-500">Quantity: {item.inventory}</p>
+                </div>
               </div>
-  )
-}
+            ))
+          ) : (
+            <p className="text-center text-gray-500">Your cart is empty.</p>
+          )}
+          <div className="text-right pt-4">
+            <p className="text-sm text-pink-700">Subtotal: <span>$ {subTotal.toFixed(2)}</span></p>
+            <p className="text-sm text-green-600">Discount: <span>$ {discount}</span></p>
+            <p className="text-lg font-semibold text-red-700 bg-blue-300 rounded-sm ml-[340px] pr-1">Total: <span>${(subTotal - discount).toFixed(2)}</span></p>
+          </div>
+        </div>
 
-export default CheckOut
+        <div className="bg-white border rounded-lg p-6 shadow-md">
+          <h2 className="text-xl font-semibold mb-4 text-pink-700">Billing Information</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+  {["firstName", "lastName", "address", "email", "phone", "city", "postalCode"].map((id) => (
+    <div key={id}>
+      <label htmlFor={id} className="text-sm font-medium text-gray-700">
+        {id.charAt(0).toUpperCase() + id.slice(1)}
+      </label>
+      <input
+        type={id === "email" ? "email" : "text"}
+        id={id}
+        placeholder={`Enter your ${id}`}
+        value={formValues[id as keyof typeof formValues]}
+        onChange={handleInputChange}
+        className={`mt-1 block w-full rounded-lg border p-3 shadow-sm 
+          ${formErrors[id as keyof typeof formErrors] ? "border-red-500" : "border-gray-300"}
+          focus:border-blue-500 focus:ring-blue-500`}
+      />
+      {formErrors[id as keyof typeof formErrors] && (
+        <p className="text-red-500 text-xs mt-1">This field is required.</p>
+      )}
+    </div>
+  ))}
+</div>
+
+
+          <button
+            onClick={handlePlaceOrder}
+            className="w-full mt-4 bg-gradient-to-r from-pink-500 to-red-500 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out hover:text-red-950"
+          >
+            Place Order
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+  );
+};
+
+export default CheckoutPage;
